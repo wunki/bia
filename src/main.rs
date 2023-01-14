@@ -8,11 +8,13 @@ struct Quote {
 }
 
 impl Quote {
-    fn parse(_line: String) -> Self {
-        Self {
-            author: "Petar Radosevic".to_owned(),
-            text: "Show me the code".to_owned(),
-        }
+    fn parse(line: String) -> Self {
+        let mut parts = line.split("--");
+
+        let text = parts.next().unwrap().trim().to_owned();
+        let author = parts.next().unwrap().trim().to_owned();
+
+        Self { author, text }
     }
 }
 
