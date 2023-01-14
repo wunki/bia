@@ -8,7 +8,7 @@ struct Quote {
 }
 
 impl Quote {
-    fn parse(line: String) -> Self {
+    fn parse(line: &str) -> Self {
         let mut parts = line.split("--");
 
         let text = parts.next().unwrap().trim().to_owned();
@@ -25,8 +25,9 @@ impl Display for Quote {
 }
 
 fn main() {
-    let quotes = include_str!("quotes.txt");
-    println!("{}", quotes);
+    let raw = include_str!("quotes.txt");
+    let quotes: Vec<Quote> = raw.lines().map(Quote::parse).collect();
+    println!("{}", quotes.first().unwrap());
 }
 
 #[cfg(test)]
@@ -44,7 +45,7 @@ mod tests {
 
     #[test]
     fn test_parsing_a_string() {
-        let line = "Show me the code -- Petar Radosevic".to_owned();
+        let line = "Show me the code -- Petar Radosevic";
         let quote = Quote::parse(line);
         let expected = Quote {
             author: "Petar Radosevic".to_owned(),
